@@ -1,27 +1,21 @@
 package com.example.m322;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.type.TypeReference;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
+import com.example.m322.data.DataLoader;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        // Get the InputStream of the JSON file
-        InputStream jsonInputStream = Main.class.getResourceAsStream("/10190.json");
+    private static DataLoader dataLoader;
 
-        // Initialize Jackson's ObjectMapper
-        ObjectMapper mapper = new ObjectMapper();
+    public static void main(String[] args) {
+        dataLoader = new DataLoader();
 
-        // Parse the JSON to a List of Maps
-        List<Map<String, Object>> data = mapper.readValue(jsonInputStream,
-                new TypeReference<List<Map<String, Object>>>() {
-                });
+        printGemeinden();
+    }
 
-        // Now you can access the data
-        for (Map<String, Object> item : data) {
-            System.out.println(item.get("gemeinde"));
-        }
+    public static DataLoader getDataLoader() {
+        return dataLoader;
+    }
+
+    private static void printGemeinden() {
+        dataLoader.getData().stream().map(dataSet -> dataSet.getGemeinde()).distinct().forEach(System.out::println);
     }
 }
