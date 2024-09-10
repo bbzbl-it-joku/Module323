@@ -1,5 +1,7 @@
 # Module322
 
+[![Java CI with Maven](https://github.com/bbzbl-it-joku/Module322/actions/workflows/maven.yml/badge.svg)](https://github.com/bbzbl-it-joku/Module322/actions/workflows/maven.yml)
+
 This is a Java project for M332.
 
 ## Description
