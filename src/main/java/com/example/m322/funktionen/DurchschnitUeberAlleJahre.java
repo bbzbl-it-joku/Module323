@@ -22,7 +22,7 @@ public class DurchschnitUeberAlleJahre {
      * @author Seth Schmutz
      */
     public static void iterativeFunction() {
-        List<Integer> uniqueYears = new ArrayList();
+        List<Integer> uniqueYears = new ArrayList<>();
 
         for (DataSet data : Main.getDataLoader().getData()) {
             if (!uniqueYears.contains(data.getJahr())) {
