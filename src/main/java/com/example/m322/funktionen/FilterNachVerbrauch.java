@@ -2,7 +2,6 @@ package com.example.m322.funktionen;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.example.m322.Main;
 import com.example.m322.data.DataSet;
 
@@ -17,7 +16,7 @@ public class FilterNachVerbrauch {
 
         // Print the filtered data
         for (DataSet dataSet : filteredData) {
-            System.out.println(dataSet.getGemeinde() + ": \t" + dataSet.getWert());
+            System.out.println(dataSet.getGemeinde() + " " + dataSet.getJahr() + ":    \t" + dataSet.getWert());
         }
     }
 }

@@ -44,6 +44,6 @@ public class DataLoader {
     }
 
     public List<DataSet> getData() {
-        return data;
+        return this.data;
     }
 }
