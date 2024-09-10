@@ -10,13 +10,27 @@ import com.example.m322.Main;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * The DataLoader class is responsible for loading data from a JSON file and
+ * providing access to the loaded data.
+ * 
+ * @author Joshua Kunz
+ * @version 1.0
+ * @since 10.10.2024
+ */
 public class DataLoader {
     private List<DataSet> data;
 
+    /**
+     * Constructor
+     */
     public DataLoader() {
         loadData();
     }
 
+    /**
+     * Loads data from a JSON file and populates the data list.
+     */
     private void loadData() {
         this.data = new ArrayList<>();
 
@@ -43,6 +57,11 @@ public class DataLoader {
         }
     }
 
+    /**
+     * Returns the list of data sets.
+     *
+     * @return the list of data sets
+     */
     public List<DataSet> getData() {
         return this.data;
     }
