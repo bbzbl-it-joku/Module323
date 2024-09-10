@@ -1,8 +1,9 @@
 package com.example.m322.utils;
 
+import java.util.Arrays;
+
 import com.example.m322.funktionen.DurchschnitUeberAlleJahre;
 import com.example.m322.funktionen.FilterNachVerbrauch;
-import java.util.Arrays;
 
 /**
  * The IterativeMethodCaller class provides static methods to call the
@@ -19,13 +20,17 @@ public class IterativeMethodCaller {
      * @param args the command line arguments
      */
     public static void handleFilterNachVerbrauch(String[] args) {
-        //Default value
+        // Default value
         double verbrauch = 100000;
 
         if (Arrays.asList(args).contains("-v")) {
-            verbrauch = Arrays.asList(args).indexOf("-v") + 1 < args.length ? Double.parseDouble(args[Arrays.asList(args).indexOf("-v") + 1]) : 100000;
+            verbrauch = Arrays.asList(args).indexOf("-v") + 1 < args.length
+                    ? Double.parseDouble(args[Arrays.asList(args).indexOf("-v") + 1])
+                    : 100000;
         } else if (Arrays.asList(args).contains("--verbrauch")) {
-            verbrauch = Arrays.asList(args).indexOf("--verbrauch") + 1 < args.length ? Double.parseDouble(args[Arrays.asList(args).indexOf("--verbrauch") + 1]) : 100000;
+            verbrauch = Arrays.asList(args).indexOf("--verbrauch") + 1 < args.length
+                    ? Double.parseDouble(args[Arrays.asList(args).indexOf("--verbrauch") + 1])
+                    : 100000;
         }
 
         FilterNachVerbrauch.iterativeFunction(verbrauch);
