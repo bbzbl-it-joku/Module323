@@ -1,4 +1,4 @@
-package com.example.m322.data;
+package com.example.m322.utils.data;
 
 import java.io.IOException;
 import java.io.InputStream;

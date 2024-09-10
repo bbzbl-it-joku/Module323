@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.m322.Main;
-import com.example.m322.data.DataSet;
+import com.example.m322.utils.data.DataSet;
 
 /**
  * This class calculates the average consumption over all years.
