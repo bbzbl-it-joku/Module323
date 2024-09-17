@@ -52,7 +52,19 @@ public class IterativeMethodCaller {
      * @param args the command line arguments
      */
     public static void handleGemeindeMinMax(String[] args) {
-        HoechsterTiefsterVerbrauch.iterativeFunction();
+        // Default value
+        boolean hoechster = true;
+
+        if (Arrays.asList(args).contains("-h")) {
+            hoechster = true;
+        } else if (Arrays.asList(args).contains("--highest")) {
+            hoechster = true;
+        } else if (Arrays.asList(args).contains("-l")) {
+            hoechster = false;
+        } else if (Arrays.asList(args).contains("--lowest")) {
+            hoechster = false;
+        }
+        HoechsterTiefsterVerbrauch.iterativeFunction(hoechster);
     }
 
     /**
