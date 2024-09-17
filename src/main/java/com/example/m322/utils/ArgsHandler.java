@@ -71,7 +71,7 @@ public class ArgsHandler {
                 System.out.println("  -v, --verbrauch\tFilter data by consumption");
                 break;
             case 3:
-                System.out.println("  -h, --highest\t\tFind the community with the highest consumption");
+                System.out.println("  -m, --highest\t\tFind the community with the highest consumption");
                 System.out.println("  -l, --lowest\t\tFind the community with the lowest consumption");
                 break;
             case 4:

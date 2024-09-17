@@ -55,7 +55,7 @@ public class IterativeMethodCaller {
         // Default value
         boolean hoechster = true;
 
-        if (Arrays.asList(args).contains("-h")) {
+        if (Arrays.asList(args).contains("-m")) {
             hoechster = true;
         } else if (Arrays.asList(args).contains("--highest")) {
             hoechster = true;
