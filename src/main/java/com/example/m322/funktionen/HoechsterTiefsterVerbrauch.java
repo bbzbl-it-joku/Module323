@@ -43,8 +43,12 @@ public class HoechsterTiefsterVerbrauch {
 
                 }
             }
-            System.out.println("Höchster Verbrauch " + jahr + " In " + gemeinde + ": " + verbrauch);
- 
+            
+            if(highest){
+                System.out.println("Höchster Verbrauch " + jahr + " In " + gemeinde + ": " + verbrauch);
+            }else{
+                System.out.println("Tiefster Verbrauch " + jahr + " In " + gemeinde + ": " + verbrauch);
+            }
         }
 
     }
