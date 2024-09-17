@@ -32,3 +32,41 @@ jobs:
       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
       env:
         GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+
+    - name: Get Release
+      id: get_release
+      uses: actions/github-script@v5
+      with:
+        script: |
+          const releases = await github.rest.repos.listReleases({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+          });
+          const release = releases.data.find((release) => release.tag_name === `v${{ steps.get_version.outputs.VERSION }}`);
+          return release.upload_url;
+      
+    - name: Upload Release Asset
+      id: upload_release_asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.get_release.outputs.result }}
+        asset_path: ./target/m332-1.0.0.jar
+        asset_name: m332-1.0.0.jar
+        asset_content_type: application/java-archive
+      
+    - name: Upload Release Asset with Dependencies
+      id: upload_release_asset_with_dependencies
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.get_release.outputs.result }}
+        asset_path: ./target/m332-1.0.0-jar-with-dependencies.jar
+        asset_name: m332-1.0.0-jar-with-dependencies.jar
+        asset_content_type: application/java-archive
