@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import com.example.m322.funktionen.DurchschnitUeberAlleJahre;
 import com.example.m322.funktionen.FilterNachVerbrauch;
+import com.example.m322.funktionen.HoechsterTiefsterVerbrauch;
 
 /**
  * The IterativeMethodCaller class provides static methods to call the
@@ -51,7 +52,7 @@ public class IterativeMethodCaller {
      * @param args the command line arguments
      */
     public static void handleGemeindeMinMax(String[] args) {
-        // add method body here
+        HoechsterTiefsterVerbrauch.iterativeFunction();
     }
 
     /**
