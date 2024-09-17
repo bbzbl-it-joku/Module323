@@ -29,8 +29,11 @@ public class HoechsterTiefsterVerbrauch {
         }
 
         for (Integer jahr : uniqueYears) {
-            double verbrauch = 0;
             String gemeinde = "";
+            double verbrauch = 0;
+            if(!highest){
+                verbrauch = 1000000000;
+            }
             for (DataSet data : Main.getDataLoader().getData()) {
                 if(jahr == data.getJahr()){
                     if(verbrauch < data.getWert() && highest){
@@ -43,7 +46,7 @@ public class HoechsterTiefsterVerbrauch {
 
                 }
             }
-            
+
             if(highest){
                 System.out.println("Höchster Verbrauch " + jahr + " In " + gemeinde + ": " + verbrauch);
             }else{
