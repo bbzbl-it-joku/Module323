@@ -19,7 +19,7 @@ public class HoechsterTiefsterVerbrauch {
      * 
      * @author Seth Schmutz
      */
-    public static void iterativeFunction() {
+    public static void iterativeFunction(boolean highest) {
         List<Integer> uniqueYears = new ArrayList<>();
 
         for (DataSet data : Main.getDataLoader().getData()) {
@@ -27,21 +27,24 @@ public class HoechsterTiefsterVerbrauch {
                 uniqueYears.add(data.getJahr());
             }
         }
-        
+
         for (Integer jahr : uniqueYears) {
-            double hoechsterVerbrauch = 0;
+            double verbrauch = 0;
             String gemeinde = "";
             for (DataSet data : Main.getDataLoader().getData()) {
                 if(jahr == data.getJahr()){
-                    if(hoechsterVerbrauch < data.getWert()){
-                        hoechsterVerbrauch = data.getWert();
+                    if(verbrauch < data.getWert() && highest){
+                        verbrauch = data.getWert();
+                        gemeinde = data.getGemeinde();
+                    } else if( verbrauch > data.getWert() && !highest){
+                        verbrauch = data.getWert();
                         gemeinde = data.getGemeinde();
                     }
 
                 }
             }
-            System.out.println("Höchster Verbrauch " + jahr + " In " + gemeinde + ": " + hoechsterVerbrauch);
-
+            System.out.println("Höchster Verbrauch " + jahr + " In " + gemeinde + ": " + verbrauch);
+ 
         }
 
     }
