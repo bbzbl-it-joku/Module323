@@ -4,7 +4,9 @@ import java.util.Arrays;
 
 import com.example.m322.funktionen.DurchschnitUeberAlleJahre;
 import com.example.m322.funktionen.FilterNachVerbrauch;
+import com.example.m322.funktionen.Gesamtverbrauch;
 import com.example.m322.funktionen.HoechsterTiefsterVerbrauch;
+import com.example.m322.funktionen.Verbrauchskategorien;
 
 /**
  * The IterativeMethodCaller class provides static methods to call the
@@ -73,7 +75,29 @@ public class IterativeMethodCaller {
      * @param args the command line arguments
      */
     public static void handleVerbrauchskategorien(String[] args) {
-        // add method body here
+        // Kategorien: low(1), medium(2), high(3)
+
+        int kategorie = 1;
+
+        if (Arrays.asList(args).contains("-c")) {
+            switch (Arrays.asList(args).indexOf("-c") + 1 < args.length ? args[Arrays.asList(args).indexOf("-c") + 1]
+                    : "low") {
+                case "low":
+                    kategorie = 1;
+                    break;
+                case "medium":
+                    kategorie = 2;
+                    break;
+                case "high":
+                    kategorie = 3;
+                    break;
+                default:
+                    kategorie = 1;
+                    break;
+            }
+        }
+
+        Verbrauchskategorien.iterativeFunction(kategorie);
     }
 
     /**
@@ -82,7 +106,7 @@ public class IterativeMethodCaller {
      * @param args the command line arguments
      */
     public static void handleGesamtverbrauch(String[] args) {
-        // add method body here
+        Gesamtverbrauch.iterativeFunction();
     }
 
     /**
