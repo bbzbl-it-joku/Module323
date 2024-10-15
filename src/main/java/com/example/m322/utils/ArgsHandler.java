@@ -59,7 +59,7 @@ public class ArgsHandler {
         System.out.println("  2\t\t\tBerechnen des durchschnittlichen Elektrizitätsverbrauchs aller Gemeinden");
         System.out.println("  3\t\t\tFinden der Gemeinde mit dem höchsten und niedrigsten Verbrauch");
         System.out.println("  4\t\t\tGruppieren der Gemeinden nach Verbrauchskategorien (z.B. niedrig, mittel, hoch)");
-        System.out.println("  5\t\t\tBerechnen des Gesamtverbrauchs des Kantons");
+        System.out.println("  5\t\t\tBerechnen des Gesamtverbrauchs des Kantons über alle Jahre");
         System.out.println("  6\t\t\tSortieren der Gemeinden nach Verbrauch (absteigend)");
         System.out.println(
                 "  7\t\t\tErstellen einer Verbrauchsstatistik (z.B. Anzahl Gemeinden in verschiedenen Verbrauchsbereichen)");
@@ -75,7 +75,7 @@ public class ArgsHandler {
                 System.out.println("  -l, --lowest\t\tFind the community with the lowest consumption");
                 break;
             case 4:
-                System.out.println("  -c, --categories\tGroup communities by consumption categories");
+                System.out.println("  -c, --categories\tGroup communities by consumption categories (e.g. low, medium, high)");
                 break;
             case 6:
                 System.out.println("  -a, --ascending\tSort communities by consumption (ascending)");
