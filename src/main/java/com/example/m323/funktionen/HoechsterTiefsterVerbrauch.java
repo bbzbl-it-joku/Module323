@@ -1,11 +1,15 @@
 package com.example.m323.funktionen;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.example.m323.Main;
 import com.example.m323.utils.data.DataSet;
+
 /**
+ * Class to find the highest and lowest consumption values per year.
  * 
  * @author Seth Schmutz
  * @version 1.0
@@ -14,9 +18,9 @@ import com.example.m323.utils.data.DataSet;
 public class HoechsterTiefsterVerbrauch {
 
     /**
-     * This method represents an iterative function.
-     * It is currently unimplemented and throws an UnsupportedOperationException.
+     * Finds the highest or lowest consumption for each year using an iterative approach.
      * 
+     * @param highest If true, finds highest consumption; if false, finds lowest
      * @author Seth Schmutz
      */
     public static void iterativeFunction(boolean highest) {
@@ -43,7 +47,6 @@ public class HoechsterTiefsterVerbrauch {
                         verbrauch = data.getWert();
                         gemeinde = data.getGemeinde();
                     }
-
                 }
             }
 
@@ -53,17 +56,26 @@ public class HoechsterTiefsterVerbrauch {
                 System.out.println("Tiefster Verbrauch " + jahr + " In " + gemeinde + ": " + verbrauch);
             }
         }
-
     }
 
     /**
-     * This method represents a functional function.
-     * It is currently unimplemented and throws an UnsupportedOperationException.
-     * 
+     * Finds both highest and lowest consumption for each year using a functional approach.
+     *  
+     * @param highest If true, finds highest consumption; if false, finds lowest
      * @author Joshua Kunz
      */
-    public void functionalFunction() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'functionalFunction'");
+    public static void functionalFunction(boolean highest) {
+        Main.getDataLoader().getData().stream()
+            .collect(Collectors.groupingBy(
+                DataSet::getJahr,
+                Collectors.maxBy(highest ? 
+                    Comparator.comparingDouble(DataSet::getWert) :
+                    Comparator.comparingDouble(DataSet::getWert).reversed())))
+            .forEach((jahr, extremeDataSet) -> extremeDataSet.ifPresent(
+                data -> System.out.println(
+                    (highest ? "Höchster" : "Tiefster") + 
+                    " Verbrauch " + jahr + 
+                    " In " + data.getGemeinde() + 
+                    ": " + data.getWert())));
     }
 }

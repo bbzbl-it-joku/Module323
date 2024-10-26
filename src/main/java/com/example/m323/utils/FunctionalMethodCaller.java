@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import com.example.m323.funktionen.DurchschnitUeberAlleJahre;
 import com.example.m323.funktionen.FilterNachVerbrauch;
+import com.example.m323.funktionen.HoechsterTiefsterVerbrauch;
 
 /**
  * The FunctionalMethodCaller class provides static methods to call the
@@ -51,8 +52,19 @@ public class FunctionalMethodCaller {
      * @param args the command line arguments
      */
     public static void handleGemeindeMinMax(String[] args) {
-        // add method body here
-    }
+        // Default value
+        boolean hoechster = true;
+
+        if (Arrays.asList(args).contains("-m")) {
+            hoechster = true;
+        } else if (Arrays.asList(args).contains("--highest")) {
+            hoechster = true;
+        } else if (Arrays.asList(args).contains("-l")) {
+            hoechster = false;
+        } else if (Arrays.asList(args).contains("--lowest")) {
+            hoechster = false;
+        }
+        HoechsterTiefsterVerbrauch.functionalFunction(hoechster);    }
 
     /**
      * Handles the verbrauchskategorien operation.
