@@ -77,6 +77,9 @@ public class ArgsHandler {
             case 6:
                 System.out.println("  -a, --ascending\tSort communities by consumption (ascending)");
                 break;
+            case 7:
+                System.out.println("  -y, --year\t\tCreate consumption statistics for a specific year");
+                break;
             default:
                 break;
         }

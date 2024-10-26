@@ -16,7 +16,7 @@ public class Verbrauchsstatistik {
      * 
      * @author Seth Schmutz
      */
-    public static void iterativeFunction() {
+    public static void iterativeFunction(int year) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'iterativeFunction'");
     }
