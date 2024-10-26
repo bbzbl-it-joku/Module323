@@ -1,12 +1,13 @@
 package com.example.m323.funktionen;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import com.example.m323.Main;
+import com.example.m323.utils.TableFormatterUtils;
 import com.example.m323.utils.data.DataSet;
 
 /**
@@ -18,6 +19,68 @@ import com.example.m323.utils.data.DataSet;
  * @since 10.10.2024
  */
 public class Verbrauchskategorien {
+    private static final int BAR_WIDTH = 30;
+    private static final int[] COLUMN_WIDTHS = {8, 28, 13, 27}; // Jahr, Kategorie, Gemeinden, Verteilung
+    private static final int TOTAL_WIDTH = 80; // Total width including borders
+    
+    private static final String CATEGORY_LOW = "Niedrig";
+    private static final String CATEGORY_MEDIUM = "Mittel";
+    private static final String CATEGORY_HIGH = "Hoch";
+    private static final List<String> CATEGORIES = List.of(CATEGORY_LOW, CATEGORY_MEDIUM, CATEGORY_HIGH);
+    
+    private static final double THRESHOLD_LOW = 10000.0;
+    private static final double THRESHOLD_MEDIUM = 50000.0;
+
+    private static void printHeader() {
+        System.out.println("\n╔" + "═".repeat(TOTAL_WIDTH - 2) + "╗");
+        System.out.println("║" + TableFormatterUtils.centerText("Verteilung der Energieverbrauchskategorien", TOTAL_WIDTH - 2) + "║");
+        System.out.println("╠" + "═".repeat(TOTAL_WIDTH - 2) + "╣");
+        System.out.println("║  Jahr  │  Kategorie                    │  Gemeinden  │  Verteilung            ║");
+        System.out.println("╟" + "─".repeat(COLUMN_WIDTHS[0]) + "┼" + 
+                         "─".repeat(COLUMN_WIDTHS[1]) + "┼" +
+                         "─".repeat(COLUMN_WIDTHS[2]) + "┼" +
+                         "─".repeat(COLUMN_WIDTHS[3]) + "╢");
+    }
+
+    private static void printYearSeparator() {
+        System.out.println("╟" + "─".repeat(COLUMN_WIDTHS[0]) + "┼" + 
+                         "─".repeat(COLUMN_WIDTHS[1]) + "┼" +
+                         "─".repeat(COLUMN_WIDTHS[2]) + "┼" +
+                         "─".repeat(COLUMN_WIDTHS[3]) + "╢");
+    }
+
+    private static void printFooter() {
+        System.out.println("╚" + "═".repeat(TOTAL_WIDTH - 2) + "╝");
+    }
+
+    private static String getCategoryDescription(String category) {
+        if (CATEGORY_LOW.equals(category)) {
+            return String.format("%-6s (0-%-,6.0f MWh)", category, THRESHOLD_LOW);
+        } else if (CATEGORY_MEDIUM.equals(category)) {
+            return String.format("%-6s (%-,6.0f-%-,6.0f MWh)", 
+                                category, THRESHOLD_LOW, THRESHOLD_MEDIUM);
+        } else if (CATEGORY_HIGH.equals(category)) {
+            return String.format("%-6s (>%-,6.0f MWh)", category, THRESHOLD_MEDIUM);
+        }
+        return category;
+    }
+
+    private static void printCategoryRow(Integer year, String category, long count, long maxCount, boolean showYear) {
+        System.out.printf("║  %s │  %-24s  │  %9d  │  %s║%n",
+            showYear ? String.format("%4d", year) : "    ",
+            getCategoryDescription(category),
+            count,
+            TableFormatterUtils.createBar(count, maxCount, BAR_WIDTH));
+    }
+
+    private static String categorizeConsumption(double value) {
+        if (value <= THRESHOLD_LOW) {
+            return CATEGORY_LOW;
+        } else if (value <= THRESHOLD_MEDIUM) {
+            return CATEGORY_MEDIUM;
+        }
+        return CATEGORY_HIGH;
+    }
 
     /**
      * Categorizes consumption data using an iterative approach.
@@ -25,40 +88,18 @@ public class Verbrauchskategorien {
      * @author Seth Schmutz
      */
     public static void iterativeFunction() {
-        List<Integer> uniqueYears = new ArrayList<>();
-        Map<Integer, List<DataSet>> categorizedData = new HashMap<>();
-
+        Map<Integer, Map<String, Long>> yearData = new TreeMap<>();
+        
+        // Collect data for each year
         for (DataSet data : Main.getDataLoader().getData()) {
             int year = data.getJahr();
-            if (!uniqueYears.contains(year)) {
-                uniqueYears.add(year);
-                categorizedData.put(year, new ArrayList<>());
-            }
+            yearData.putIfAbsent(year, new HashMap<>());
+            
+            String category = categorizeConsumption(data.getWert());
+            yearData.get(year).merge(category, 1L, Long::sum);
         }
 
-        for (Integer year : uniqueYears) {
-            int niedrigCount = 0;
-            int mittelCount = 0;
-            int hochCount = 0;
-
-            for (DataSet data : Main.getDataLoader().getData()) {
-                if (year == data.getJahr()) {
-                    double usage = data.getWert();
-                    if (usage <= 10000) {
-                        niedrigCount++;
-                    } else if (usage <= 50000) {
-                        mittelCount++;
-                    } else {
-                        hochCount++;
-                    }
-                }
-            }
-
-            System.out.println("Year " + year + ":");
-            System.out.println("Niedrig (0-10,000 MWh): " + niedrigCount + " Gemeinden");
-            System.out.println("Mittel (10,001-50,000 MWh): " + mittelCount + " Gemeinden");
-            System.out.println("Hoch (50,001+ MWh): " + hochCount + " Gemeinden\n");
-        }
+        printFormattedResults(yearData);
     }
 
     /**
@@ -68,32 +109,37 @@ public class Verbrauchskategorien {
      * @author Joshua Kunz
      */
     public static void functionalFunction() {
-        Main.getDataLoader().getData().stream()
+        Map<Integer, Map<String, Long>> yearData = Main.getDataLoader().getData().stream()
             .collect(Collectors.groupingBy(
                 DataSet::getJahr,
-                Collectors.collectingAndThen(
-                    Collectors.groupingBy(
-                        data -> {
-                            double usage = data.getWert();
-                            if (usage <= 10000) return "Niedrig";
-                            else if (usage <= 50000) return "Mittel";
-                            else return "Hoch";
-                        },
-                        Collectors.counting()
-                    ),
-                    categoryMap -> {
-                        return Map.of(
-                            "Niedrig", categoryMap.getOrDefault("Niedrig", 0L),
-                            "Mittel", categoryMap.getOrDefault("Mittel", 0L),
-                            "Hoch", categoryMap.getOrDefault("Hoch", 0L)
-                        );
-                    }
-                )))
-            .forEach((year, categories) -> {
-                System.out.println("Year " + year + ":");
-                System.out.println("Niedrig (0-10,000 MWh): " + categories.get("Niedrig") + " Gemeinden");
-                System.out.println("Mittel (10,001-50,000 MWh): " + categories.get("Mittel") + " Gemeinden");
-                System.out.println("Hoch (50,001+ MWh): " + categories.get("Hoch") + " Gemeinden\n");
-            });
+                TreeMap::new,
+                Collectors.groupingBy(
+                    data -> categorizeConsumption(data.getWert()),
+                    Collectors.counting()
+                )
+            ));
+
+        printFormattedResults(yearData);
+    }
+
+    private static void printFormattedResults(Map<Integer, Map<String, Long>> yearData) {
+        printHeader();
+
+        Integer lastYear = ((TreeMap<Integer, Map<String, Long>>) yearData).lastKey();
+        yearData.forEach((year, categories) -> {
+            long maxCount = categories.values().stream().mapToLong(Long::valueOf).max().orElse(0L);
+            
+            for (int i = 0; i < CATEGORIES.size(); i++) {
+                String category = CATEGORIES.get(i);
+                long count = categories.getOrDefault(category, 0L);
+                printCategoryRow(year, category, count, maxCount, i == 0); // Show year only for first category
+            }
+
+            if (!year.equals(lastYear)) {
+                printYearSeparator();
+            }
+        });
+
+        printFooter();
     }
 }

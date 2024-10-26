@@ -1,13 +1,14 @@
 package com.example.m323.funktionen;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.example.m323.Main;
+import com.example.m323.utils.TableFormatterUtils;
 import com.example.m323.utils.data.DataSet;
 
 /**
@@ -19,6 +20,46 @@ import com.example.m323.utils.data.DataSet;
  * @since 10.10.2024
  */
 public class Gesamtverbrauch {
+    private static final int BAR_WIDTH = 40;
+    private static final int[] COLUMN_WIDTHS = {21, 24, 35}; // Gemeinde, Gesamtverbrauch, Visualisierung
+    private static final int TOTAL_WIDTH = 82; // Total width of the table
+    private static final String TITLE = "Gesamtenergieverbrauch";
+    
+    /**
+     * Prints the header for the consumption display.
+     */
+    private static void printHeader() {
+        System.out.println("\n╔" + "═".repeat(TOTAL_WIDTH - 2) + "╗");
+        System.out.println("║" + TableFormatterUtils.centerText(TITLE, TOTAL_WIDTH - 2) + "║");
+        System.out.println(TableFormatterUtils.createColumnSeparator(COLUMN_WIDTHS, '═', '╦'));
+        System.out.println("║  Gemeinde              ║  Gesamtverbrauch (MWh) ║  Visualisierung           ║");
+        System.out.println(TableFormatterUtils.createColumnSeparator(COLUMN_WIDTHS, '═', '╬'));
+    }
+
+    /**
+     * Prints the footer with summary statistics.
+     * 
+     * @param totalConsumption Total consumption across all municipalities
+     * @param avgConsumption Average consumption per municipality
+     */
+    private static void printFooter(BigDecimal totalConsumption, BigDecimal avgConsumption) {
+        System.out.println(TableFormatterUtils.createColumnSeparator(COLUMN_WIDTHS, '═', '╩'));
+        String stats = String.format("  Total: %s MWh    Durchschnitt: %s MWh",
+            TableFormatterUtils.formatNumber(totalConsumption),
+            TableFormatterUtils.formatNumber(avgConsumption));
+        System.out.println("║" + TableFormatterUtils.centerText(stats, TOTAL_WIDTH - 2) + "║");
+        System.out.println("╚" + "═".repeat(TOTAL_WIDTH - 2) + "╝");
+    }
+
+    /**
+     * Prints a single data row with formatting.
+     */
+    private static void printRow(String gemeinde, BigDecimal value, BigDecimal maxValue) {
+        System.out.printf("║  %-19s ║  %18s  ║  %s║%n",
+            gemeinde,
+            TableFormatterUtils.formatNumber(value),
+            TableFormatterUtils.createBar(value, maxValue, BAR_WIDTH));
+    }
 
     /**
      * This method represents an iterative function.
@@ -27,24 +68,40 @@ public class Gesamtverbrauch {
      */
     public static void iterativeFunction() {
         Map<String, BigDecimal> verbrauch = new HashMap<>();
-        DecimalFormat df = new DecimalFormat("#.##");
 
+        // Calculate total consumption per municipality
         for (DataSet data : Main.getDataLoader().getData()) {
             BigDecimal wert = BigDecimal.valueOf(data.getWert());
-            if (verbrauch.containsKey(data.getGemeinde())) {
-                verbrauch.put(data.getGemeinde(), verbrauch.get(data.getGemeinde()).add(wert));
-            } else {
-                verbrauch.put(data.getGemeinde(), wert);
-            }
+            verbrauch.merge(data.getGemeinde(), wert, BigDecimal::add);
         }
 
+        // Sort municipalities by consumption
         Map<String, BigDecimal> sortedVerbrauch = verbrauch.entrySet().stream()
-                .sorted(Map.Entry.<String, BigDecimal>comparingByValue().reversed())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+            .sorted(Map.Entry.<String, BigDecimal>comparingByValue().reversed())
+            .collect(Collectors.toMap(
+                Map.Entry::getKey, 
+                Map.Entry::getValue, 
+                (e1, e2) -> e1, 
+                LinkedHashMap::new));
 
-        for (String gemeinde : sortedVerbrauch.keySet()) {
-            System.out.printf("Gesamtverbrauch %-30s: %s%n", gemeinde, df.format(sortedVerbrauch.get(gemeinde)));
-        }
+        // Calculate statistics
+        BigDecimal maxVerbrauch = sortedVerbrauch.values().stream()
+            .max(BigDecimal::compareTo)
+            .orElse(BigDecimal.ZERO);
+        
+        BigDecimal totalVerbrauch = sortedVerbrauch.values().stream()
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+        
+        BigDecimal avgVerbrauch = totalVerbrauch.divide(
+            BigDecimal.valueOf(sortedVerbrauch.size()), 
+            2, 
+            RoundingMode.HALF_UP);
+
+        // Print results
+        printHeader();
+        sortedVerbrauch.forEach((gemeinde, wert) -> 
+            printRow(gemeinde, wert, maxVerbrauch));
+        printFooter(totalVerbrauch, avgVerbrauch);
     }
 
     /**
@@ -54,19 +111,29 @@ public class Gesamtverbrauch {
      * @author Joshua Kunz
      */
     public static void functionalFunction() {
-        DecimalFormat df = new DecimalFormat("#.##");
-
-        Main.getDataLoader().getData().stream()
+        Map<String, BigDecimal> verbrauch = Main.getDataLoader().getData().stream()
             .collect(Collectors.groupingBy(
                 DataSet::getGemeinde,
                 Collectors.mapping(
                     data -> BigDecimal.valueOf(data.getWert()),
-                    Collectors.reducing(BigDecimal.ZERO, BigDecimal::add))))
-            .entrySet().stream()
+                    Collectors.reducing(BigDecimal.ZERO, BigDecimal::add))));
+
+        BigDecimal maxVerbrauch = verbrauch.values().stream()
+            .max(BigDecimal::compareTo)
+            .orElse(BigDecimal.ZERO);
+
+        BigDecimal totalVerbrauch = verbrauch.values().stream()
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal avgVerbrauch = totalVerbrauch.divide(
+            BigDecimal.valueOf(verbrauch.size()), 
+            2, 
+            RoundingMode.HALF_UP);
+
+        printHeader();
+        verbrauch.entrySet().stream()
             .sorted(Map.Entry.<String, BigDecimal>comparingByValue().reversed())
-            .forEach(entry -> 
-                System.out.printf("Gesamtverbrauch %-30s: %s%n", 
-                    entry.getKey(), 
-                    df.format(entry.getValue())));
+            .forEach(entry -> printRow(entry.getKey(), entry.getValue(), maxVerbrauch));
+        printFooter(totalVerbrauch, avgVerbrauch);
     }
 }
