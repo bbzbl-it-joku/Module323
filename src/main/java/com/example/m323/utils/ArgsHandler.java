@@ -74,9 +74,6 @@ public class ArgsHandler {
                 System.out.println("  -m, --highest\t\tFind the community with the highest consumption");
                 System.out.println("  -l, --lowest\t\tFind the community with the lowest consumption");
                 break;
-            case 4:
-                System.out.println("  -c, --categories\tGroup communities by consumption categories (e.g. low, medium, high)");
-                break;
             case 6:
                 System.out.println("  -a, --ascending\tSort communities by consumption (ascending)");
                 break;

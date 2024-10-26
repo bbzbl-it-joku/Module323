@@ -75,29 +75,8 @@ public class IterativeMethodCaller {
      * @param args the command line arguments
      */
     public static void handleVerbrauchskategorien(String[] args) {
-        // Kategorien: low(1), medium(2), high(3)
 
-        int kategorie = 1;
-
-        if (Arrays.asList(args).contains("-c")) {
-            switch (Arrays.asList(args).indexOf("-c") + 1 < args.length ? args[Arrays.asList(args).indexOf("-c") + 1]
-                    : "low") {
-                case "low":
-                    kategorie = 1;
-                    break;
-                case "medium":
-                    kategorie = 2;
-                    break;
-                case "high":
-                    kategorie = 3;
-                    break;
-                default:
-                    kategorie = 1;
-                    break;
-            }
-        }
-
-        Verbrauchskategorien.iterativeFunction(kategorie);
+        Verbrauchskategorien.iterativeFunction();
     }
 
     /**

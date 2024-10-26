@@ -7,7 +7,8 @@ import com.example.m323.Main;
 import com.example.m323.utils.data.DataSet;
 
 /**
- * The FilterNachVerbrauch class provides methods to filter data based on consumption.
+ * The FilterNachVerbrauch class provides methods to filter data based on
+ * consumption.
  * 
  * @author Joshua Kunz
  * @author Seth Schmutz
@@ -21,7 +22,7 @@ public class FilterNachVerbrauch {
      *
      * @param verbrauch The consumption threshold to filter the data.
      * 
-     * @author Joshua Kunz
+     * @author Seth Schmutz
      */
     public static void iterativeFunction(double verbrauch) {
         List<DataSet> filteredData = new ArrayList<>();
