@@ -20,7 +20,7 @@ import com.example.m323.utils.data.DataSet;
 public class SortierenNachVerbrauch {
     /**
      * This method represents an iterative function.
-     * It is currently unimplemented and throws an UnsupportedOperationException.
+     * 
      * 
      * @author Seth Schmutz
      */
