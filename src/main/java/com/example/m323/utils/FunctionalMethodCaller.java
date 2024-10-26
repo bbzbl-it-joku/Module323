@@ -8,6 +8,7 @@ import com.example.m323.funktionen.Gesamtverbrauch;
 import com.example.m323.funktionen.HoechsterTiefsterVerbrauch;
 import com.example.m323.funktionen.SortierenNachVerbrauch;
 import com.example.m323.funktionen.Verbrauchskategorien;
+import com.example.m323.funktionen.Verbrauchsstatistik;
 
 /**
  * The FunctionalMethodCaller class provides static methods to call the
@@ -67,7 +68,8 @@ public class FunctionalMethodCaller {
         } else if (Arrays.asList(args).contains("--lowest")) {
             hoechster = false;
         }
-        HoechsterTiefsterVerbrauch.functionalFunction(hoechster);    }
+        HoechsterTiefsterVerbrauch.functionalFunction(hoechster);
+    }
 
     /**
      * Handles the verbrauchskategorien operation.
@@ -102,6 +104,17 @@ public class FunctionalMethodCaller {
      * @param args the command line arguments
      */
     public static void handleVerbrauchsstatistik(String[] args) {
-        // add method body here
+        int year = 2020;
+
+        if (Arrays.asList(args).contains("-y")) {
+            year = Arrays.asList(args).indexOf("-y") + 1 < args.length
+                    ? Integer.parseInt(args[Arrays.asList(args).indexOf("-y") + 1])
+                    : 2020;
+        } else if (Arrays.asList(args).contains("--year")) {
+            year = Arrays.asList(args).indexOf("--year") + 1 < args.length
+                    ? Integer.parseInt(args[Arrays.asList(args).indexOf("--year") + 1])
+                    : 2020;
+        }
+        Verbrauchsstatistik.functionalFunction(year);
     }
 }
