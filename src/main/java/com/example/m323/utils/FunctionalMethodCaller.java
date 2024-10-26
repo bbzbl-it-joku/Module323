@@ -2,6 +2,7 @@ package com.example.m323.utils;
 
 import java.util.Arrays;
 
+import com.example.m323.funktionen.DurchschnitUeberAlleJahre;
 import com.example.m323.funktionen.FilterNachVerbrauch;
 
 /**
@@ -41,7 +42,7 @@ public class FunctionalMethodCaller {
      * @param args the command line arguments
      */
     public static void handleDurchschnittlicherVerbrauch(String[] args) {
-        // add method body here
+        DurchschnitUeberAlleJahre.functionalFunction();
     }
 
     /**

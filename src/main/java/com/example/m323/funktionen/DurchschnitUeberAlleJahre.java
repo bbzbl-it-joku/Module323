@@ -2,6 +2,7 @@ package com.example.m323.funktionen;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.example.m323.Main;
 import com.example.m323.utils.data.DataSet;
@@ -48,12 +49,16 @@ public class DurchschnitUeberAlleJahre {
 
     /**
      * Calculates the average consumption using a functional approach.
-     * This method is currently unimplemented.
+     * Uses Java streams to group data by year and calculate averages.
      * 
      * @author Joshua Kunz
      */
-    public void functionalFunction() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'functionalFunction'");
+    public static void functionalFunction() {
+        Main.getDataLoader().getData().stream()
+            .collect(Collectors.groupingBy(
+                DataSet::getJahr,
+                Collectors.averagingDouble(DataSet::getWert)))
+            .forEach((jahr, durchschnitt) -> 
+                System.out.println("Durchschnitlicher Verbrauch " + jahr + ": " + durchschnitt));
     }
 }
