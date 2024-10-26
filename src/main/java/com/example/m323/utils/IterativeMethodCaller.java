@@ -6,7 +6,9 @@ import com.example.m323.funktionen.DurchschnitUeberAlleJahre;
 import com.example.m323.funktionen.FilterNachVerbrauch;
 import com.example.m323.funktionen.Gesamtverbrauch;
 import com.example.m323.funktionen.HoechsterTiefsterVerbrauch;
+import com.example.m323.funktionen.SortierenNachVerbrauch;
 import com.example.m323.funktionen.Verbrauchskategorien;
+import com.example.m323.funktionen.Verbrauchsstatistik;
 
 /**
  * The IterativeMethodCaller class provides static methods to call the
@@ -94,7 +96,7 @@ public class IterativeMethodCaller {
      * @param args the command line arguments
      */
     public static void handleSortierenNachVerbrauch(String[] args) {
-        // add method body here
+        SortierenNachVerbrauch.iterativeFunction();
     }
 
     /**
@@ -103,6 +105,6 @@ public class IterativeMethodCaller {
      * @param args the command line arguments
      */
     public static void handleVerbrauchsstatistik(String[] args) {
-        // add method body here
+        Verbrauchsstatistik.iterativeFunction();
     }
 }
