@@ -4,12 +4,15 @@ import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.ArrayList;
 import java.text.DecimalFormat;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.example.m323.Main;
 import com.example.m323.utils.data.DataSet;
 
 /**
- * This class calculates consumption statistics for a given year.
+ * This class calculates and visualizes consumption statistics for a given year.
  * 
  * @author Joshua Kunz
  * @author Seth Schmutz
@@ -17,8 +20,11 @@ import com.example.m323.utils.data.DataSet;
  * @since 10.10.2024
  */
 public class Verbrauchsstatistik {
+    private static final int GRAPH_WIDTH = 50; // Width of the console graph
+    private static final int NUM_BINS = 10;    // Number of histogram bins
+
     /**
-     * Calculates consumption statistics using an iterative approach.
+     * Calculates consumption statistics and displays a graph using an iterative approach.
      * 
      * @param year The year to calculate statistics for
      * @author Seth Schmutz
@@ -59,6 +65,16 @@ public class Verbrauchsstatistik {
         double variance = sumSquaredDiff / count;
         double stdDev = Math.sqrt(variance);
 
+        // Create histogram data
+        int[] histogram = new int[NUM_BINS];
+        double binWidth = (max - min) / NUM_BINS;
+        
+        for (double value : values) {
+            int bin = (int) ((value - min) / binWidth);
+            if (bin == NUM_BINS) bin--; // Handle edge case for maximum value
+            histogram[bin]++;
+        }
+
         // Format and print results
         DecimalFormat df = new DecimalFormat("#.##");
         System.out.println("Statistics for year " + year + ":");
@@ -67,10 +83,27 @@ public class Verbrauchsstatistik {
         System.out.println("Maximum consumption: " + df.format(max));
         System.out.println("Average consumption: " + df.format(mean));
         System.out.println("Standard deviation: " + df.format(stdDev));
+        
+        // Print histogram
+        System.out.println("\nDistribution of consumption values:");
+        int maxCount = 0;
+        for (int binCount : histogram) {
+            maxCount = Math.max(maxCount, binCount);
+        }
+
+        for (int i = 0; i < NUM_BINS; i++) {
+            double binStart = min + (i * binWidth);
+            double binEnd = binStart + binWidth;
+            int barLength = (int) ((histogram[i] * GRAPH_WIDTH) / maxCount);
+            System.out.printf("%8.0f - %-8.0f |%-" + GRAPH_WIDTH + "s| %d%n", 
+                binStart, binEnd, 
+                "#".repeat(barLength), 
+                histogram[i]);
+        }
     }
 
     /**
-     * Calculates consumption statistics using a functional approach.
+     * Calculates consumption statistics and displays a graph using a functional approach.
      * 
      * @param year The year to calculate statistics for
      * @author Joshua Kunz
@@ -100,6 +133,18 @@ public class Verbrauchsstatistik {
                 .orElse(0.0)
         );
 
+        // Create histogram data using streams
+        double binWidth = (stats.getMax() - stats.getMin()) / NUM_BINS;
+        Map<Integer, Long> histogram = Main.getDataLoader().getData().stream()
+            .filter(data -> data.getJahr() == year)
+            .collect(Collectors.groupingBy(
+                data -> {
+                    int bin = (int) ((data.getWert() - stats.getMin()) / binWidth);
+                    return bin >= NUM_BINS ? NUM_BINS - 1 : bin;
+                },
+                Collectors.counting()
+            ));
+
         // Print results
         System.out.println("Statistics for year " + year + ":");
         System.out.println("Number of municipalities: " + stats.getCount());
@@ -107,5 +152,21 @@ public class Verbrauchsstatistik {
         System.out.println("Maximum consumption: " + df.format(stats.getMax()));
         System.out.println("Average consumption: " + df.format(stats.getAverage()));
         System.out.println("Standard deviation: " + df.format(stdDev));
+        
+        // Print histogram using streams
+        System.out.println("\nDistribution of consumption values:");
+        long maxCount = histogram.values().stream().mapToLong(Long::valueOf).max().orElse(0);
+        
+        IntStream.range(0, NUM_BINS).forEach(i -> {
+            double binStart = stats.getMin() + (i * binWidth);
+            double binEnd = binStart + binWidth;
+            long binCount = histogram.getOrDefault(i, 0L);
+            int barLength = (int) ((binCount * GRAPH_WIDTH) / maxCount);
+            
+            System.out.printf("%8.0f - %-8.0f |%-" + GRAPH_WIDTH + "s| %d%n",
+                binStart, binEnd,
+                "#".repeat(barLength),
+                binCount);
+        });
     }
 }
