@@ -48,13 +48,25 @@ public class Gesamtverbrauch {
     }
 
     /**
-     * This method represents a functional function.
-     * It is currently unimplemented and throws an UnsupportedOperationException.
+     * Calculates and displays total consumption using a functional approach.
+     * Uses streams to group, sum, sort, and format the consumption data.
      * 
      * @author Joshua Kunz
      */
-    public void functionalFunction() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'functionalFunction'");
+    public static void functionalFunction() {
+        DecimalFormat df = new DecimalFormat("#.##");
+
+        Main.getDataLoader().getData().stream()
+            .collect(Collectors.groupingBy(
+                DataSet::getGemeinde,
+                Collectors.mapping(
+                    data -> BigDecimal.valueOf(data.getWert()),
+                    Collectors.reducing(BigDecimal.ZERO, BigDecimal::add))))
+            .entrySet().stream()
+            .sorted(Map.Entry.<String, BigDecimal>comparingByValue().reversed())
+            .forEach(entry -> 
+                System.out.printf("Gesamtverbrauch %-30s: %s%n", 
+                    entry.getKey(), 
+                    df.format(entry.getValue())));
     }
 }
