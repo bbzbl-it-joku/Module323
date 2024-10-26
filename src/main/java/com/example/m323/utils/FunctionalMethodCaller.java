@@ -1,5 +1,9 @@
 package com.example.m323.utils;
 
+import java.util.Arrays;
+
+import com.example.m323.funktionen.FilterNachVerbrauch;
+
 /**
  * The FunctionalMethodCaller class provides static methods to call the
  * corresponding functional methods.
@@ -15,7 +19,20 @@ public class FunctionalMethodCaller {
      * @param args the command line arguments
      */
     public static void handleFilterNachVerbrauch(String[] args) {
-        // add method body here
+        // Default value
+        double verbrauch = 100000;
+
+        if (Arrays.asList(args).contains("-v")) {
+            verbrauch = Arrays.asList(args).indexOf("-v") + 1 < args.length
+                    ? Double.parseDouble(args[Arrays.asList(args).indexOf("-v") + 1])
+                    : 100000;
+        } else if (Arrays.asList(args).contains("--verbrauch")) {
+            verbrauch = Arrays.asList(args).indexOf("--verbrauch") + 1 < args.length
+                    ? Double.parseDouble(args[Arrays.asList(args).indexOf("--verbrauch") + 1])
+                    : 100000;
+        }
+
+        FilterNachVerbrauch.functionalFunction(verbrauch);
     }
 
     /**

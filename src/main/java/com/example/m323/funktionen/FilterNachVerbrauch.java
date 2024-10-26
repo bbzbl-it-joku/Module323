@@ -40,12 +40,17 @@ public class FilterNachVerbrauch {
 
     /**
      * Filters the data using a functional approach.
-     * This method is not implemented yet.
-     * 
+     * Uses Java streams to filter and process the data.
+     *
+     * @param verbrauch The consumption threshold to filter the data.
      * @author Joshua Kunz
      */
-    public void functionalFunction() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'functionalFunction'");
+    public static void functionalFunction(double verbrauch) {
+        Main.getDataLoader().getData().stream()
+            .filter(dataSet -> dataSet.getWert() > verbrauch)
+            .forEach(dataSet -> System.out.println(
+                dataSet.getGemeinde() + " " + 
+                dataSet.getJahr() + ":    \t" + 
+                dataSet.getWert()));
     }
 }
