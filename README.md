@@ -33,7 +33,7 @@ mvn clean package
 After building the project, you can run it with the following command:
 
 ```bash
-java -jar target/m332-1.0.0-jar-with-dependencies.jar
+java -jar target/m323-1.0.0-jar-with-dependencies.jar
 ```
 
 This will start the program, which will filter the data and print the results to the console.
