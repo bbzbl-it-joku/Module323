@@ -66,23 +66,17 @@ public class ArgsHandler {
         System.out.println("Options:");
         System.out.println("  -h, --help\t\tPrint this help message");
 
-        switch (method) {
-            case 1:
-                System.out.println("  -v, --verbrauch\tFilter data by consumption");
-                break;
-            case 3:
-                System.out.println("  -m, --highest\t\tFind the community with the highest consumption");
-                System.out.println("  -l, --lowest\t\tFind the community with the lowest consumption");
-                break;
-            case 6:
-                System.out.println("  -a, --ascending\tSort communities by consumption (ascending)");
-                break;
-            case 7:
-                System.out.println("  -y, --year\t\tCreate consumption statistics for a specific year");
-                break;
-            default:
-                break;
-        }
+        System.out.println("\nOptions for method nr. 1:");
+        System.out.println("  -v, --verbrauch\tFilter data by consumption");
+
+        System.out.println("\nOptions for method nr. 3:");
+        System.out.println("  -m, --highest\t\tFind the community with the highest consumption");
+
+        System.out.println("\nOptions for method nr. 6:");
+        System.out.println("  -a, --ascending\tSort communities by consumption (ascending)");
+
+        System.out.println("\nOptions for method nr. 7:");
+        System.out.println("  -y, --year\t\tCreate consumption statistics for a specific year");
 
         System.exit(0);
     }
