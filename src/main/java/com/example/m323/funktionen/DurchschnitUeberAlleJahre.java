@@ -1,10 +1,10 @@
-package com.example.m322.funktionen;
+package com.example.m323.funktionen;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.m322.Main;
-import com.example.m322.utils.data.DataSet;
+import com.example.m323.Main;
+import com.example.m323.utils.data.DataSet;
 
 /**
  * This class calculates the average consumption over all years.

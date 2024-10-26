@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>m332</artifactId>
+    <artifactId>m323</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
@@ -44,7 +44,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.example.m322.Main</mainClass>
+                            <mainClass>com.example.m323.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -70,7 +70,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.example.m322.Main</mainClass>
+                            <mainClass>com.example.m323.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -80,7 +80,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.4.0</version>
                 <configuration>
-                    <mainClass>com.example.m322.Main</mainClass>
+                    <mainClass>com.example.m323.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>

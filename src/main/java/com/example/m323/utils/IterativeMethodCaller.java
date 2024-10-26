@@ -1,12 +1,12 @@
-package com.example.m322.utils;
+package com.example.m323.utils;
 
 import java.util.Arrays;
 
-import com.example.m322.funktionen.DurchschnitUeberAlleJahre;
-import com.example.m322.funktionen.FilterNachVerbrauch;
-import com.example.m322.funktionen.Gesamtverbrauch;
-import com.example.m322.funktionen.HoechsterTiefsterVerbrauch;
-import com.example.m322.funktionen.Verbrauchskategorien;
+import com.example.m323.funktionen.DurchschnitUeberAlleJahre;
+import com.example.m323.funktionen.FilterNachVerbrauch;
+import com.example.m323.funktionen.Gesamtverbrauch;
+import com.example.m323.funktionen.HoechsterTiefsterVerbrauch;
+import com.example.m323.funktionen.Verbrauchskategorien;
 
 /**
  * The IterativeMethodCaller class provides static methods to call the

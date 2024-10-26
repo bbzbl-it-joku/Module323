@@ -1,4 +1,4 @@
-package com.example.m322.utils.data;
+package com.example.m323.utils.data;
 
 /**
  * Represents a data set with information about a municipality.

@@ -1,4 +1,4 @@
-package com.example.m322.funktionen;
+package com.example.m323.funktionen;
 
 /**
  * This class represents an EXAMPLE and contains two methods: iterativeFunction
@@ -9,7 +9,7 @@ package com.example.m322.funktionen;
  * @version 1.0
  * @since 10.10.2024
  */
-public class Verbrauchskategorien {
+public class EXAMPLE {
 
     /**
      * This method represents an iterative function.
@@ -17,8 +17,9 @@ public class Verbrauchskategorien {
      * 
      * @author Seth Schmutz
      */
-    public static void iterativeFunction(int kategorie) {
-        
+    public static void iterativeFunction() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'iterativeFunction'");
     }
 
     /**

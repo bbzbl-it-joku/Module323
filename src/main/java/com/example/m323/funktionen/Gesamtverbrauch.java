@@ -1,4 +1,4 @@
-package com.example.m322.funktionen;
+package com.example.m323.funktionen;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -7,8 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.example.m322.Main;
-import com.example.m322.utils.data.DataSet;
+import com.example.m323.Main;
+import com.example.m323.utils.data.DataSet;
 
 /**
  * This class represents the total consumption of the cantons.

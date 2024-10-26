@@ -1,7 +1,7 @@
-package com.example.m322;
+package com.example.m323;
 
-import com.example.m322.utils.ArgsHandler;
-import com.example.m322.utils.DataLoader;
+import com.example.m323.utils.ArgsHandler;
+import com.example.m323.utils.DataLoader;
 
 /**
  * The main class of the application.
