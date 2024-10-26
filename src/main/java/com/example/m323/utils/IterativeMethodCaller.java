@@ -77,7 +77,6 @@ public class IterativeMethodCaller {
      * @param args the command line arguments
      */
     public static void handleVerbrauchskategorien(String[] args) {
-
         Verbrauchskategorien.iterativeFunction();
     }
 
