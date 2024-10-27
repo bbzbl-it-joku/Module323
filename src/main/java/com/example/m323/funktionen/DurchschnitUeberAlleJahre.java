@@ -20,7 +20,7 @@ import com.example.m323.utils.data.DataSet;
  */
 public class DurchschnitUeberAlleJahre {
     private static final int BAR_WIDTH = 45;
-    private static final int[] COLUMN_WIDTHS = {8, 21, 47}; // Width for each column
+    private static final int[] COLUMN_WIDTHS = {8, 22, 47}; // Width for each column
     private static final String TITLE = "Durchschnittlicher Energieverbrauch";
     
     /**
@@ -28,11 +28,11 @@ public class DurchschnitUeberAlleJahre {
      */
     private static void printHeader() {
         int totalWidth = COLUMN_WIDTHS[0] + COLUMN_WIDTHS[1] + COLUMN_WIDTHS[2] + 4; // +4 for borders
-        System.out.println("\n╔" + "═".repeat(totalWidth) + "╗");
-        System.out.println("║" + TableFormatterUtils.centerText(TITLE, totalWidth) + "║");
+        System.out.println("\n╔" + "═".repeat(totalWidth - 2) + "╗");
+        System.out.println("║" + TableFormatterUtils.centerText(TITLE, totalWidth - 2) + "║");
         System.out.println("╠" + "═".repeat(COLUMN_WIDTHS[0]) + "╦" + "═".repeat(COLUMN_WIDTHS[1]) + 
                          "╦" + "═".repeat(COLUMN_WIDTHS[2]) + "╣");
-        System.out.println("║  Jahr  ║  Durchschnitt (MWh)  ║  Visualisierung                         ║");
+        System.out.println("║  Jahr  ║  Durchschnitt (MWh)  ║  Visualisierung                               ║");
         System.out.println("╠" + "═".repeat(COLUMN_WIDTHS[0]) + "╬" + "═".repeat(COLUMN_WIDTHS[1]) + 
                          "╬" + "═".repeat(COLUMN_WIDTHS[2]) + "╣");
     }
@@ -49,7 +49,7 @@ public class DurchschnitUeberAlleJahre {
      * Prints a formatted row of data.
      */
     private static void printRow(int year, double value, double maxValue) {
-        System.out.printf("║  %4d  ║  %15s   ║  %s║%n",
+        System.out.printf("║  %4d  ║     %15s  ║ %s ║%n",
             year,
             TableFormatterUtils.formatNumber(value),
             TableFormatterUtils.createBar(value, maxValue, BAR_WIDTH));

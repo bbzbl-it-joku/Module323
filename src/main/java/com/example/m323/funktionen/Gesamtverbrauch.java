@@ -20,9 +20,9 @@ import com.example.m323.utils.data.DataSet;
  * @since 10.10.2024
  */
 public class Gesamtverbrauch {
-    private static final int BAR_WIDTH = 40;
-    private static final int[] COLUMN_WIDTHS = {21, 24, 35}; // Gemeinde, Gesamtverbrauch, Visualisierung
-    private static final int TOTAL_WIDTH = 82; // Total width of the table
+    private static final int BAR_WIDTH = 31;
+    private static final int[] COLUMN_WIDTHS = {21, 25, 33}; // Gemeinde, Gesamtverbrauch, Visualisierung
+    private static final int TOTAL_WIDTH = 83; // Total width of the table
     private static final String TITLE = "Gesamtenergieverbrauch";
     
     /**
@@ -32,7 +32,7 @@ public class Gesamtverbrauch {
         System.out.println("\n╔" + "═".repeat(TOTAL_WIDTH - 2) + "╗");
         System.out.println("║" + TableFormatterUtils.centerText(TITLE, TOTAL_WIDTH - 2) + "║");
         System.out.println(TableFormatterUtils.createColumnSeparator(COLUMN_WIDTHS, '═', '╦'));
-        System.out.println("║  Gemeinde              ║  Gesamtverbrauch (MWh) ║  Visualisierung           ║");
+        System.out.println("║  Gemeinde           ║  Gesamtverbrauch (MWh)  ║  Visualisierung                 ║");
         System.out.println(TableFormatterUtils.createColumnSeparator(COLUMN_WIDTHS, '═', '╬'));
     }
 
@@ -55,7 +55,7 @@ public class Gesamtverbrauch {
      * Prints a single data row with formatting.
      */
     private static void printRow(String gemeinde, BigDecimal value, BigDecimal maxValue) {
-        System.out.printf("║  %-19s ║  %18s  ║  %s║%n",
+        System.out.printf("║  %-17s  ║  %21s  ║ %s ║%n",
             gemeinde,
             TableFormatterUtils.formatNumber(value),
             TableFormatterUtils.createBar(value, maxValue, BAR_WIDTH));

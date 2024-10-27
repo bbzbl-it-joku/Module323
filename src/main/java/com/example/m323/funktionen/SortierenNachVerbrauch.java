@@ -20,8 +20,8 @@ import com.example.m323.utils.data.DataSet;
  */
 public class SortierenNachVerbrauch {
     private static final int BAR_WIDTH = 35;
-    private static final int[] COLUMN_WIDTHS = {22, 18, 37}; // Gemeinde, Verbrauch, Visualisierung
-    private static final int TOTAL_WIDTH = 81; // Total width including borders
+    private static final int[] COLUMN_WIDTHS = {22, 19, 37}; // Gemeinde, Verbrauch, Visualisierung
+    private static final int TOTAL_WIDTH = 82; // Total width including borders
 
     /**
      * Prints the header for a specific year's data.
@@ -30,11 +30,13 @@ public class SortierenNachVerbrauch {
         System.out.println("\n╔" + "═".repeat(TOTAL_WIDTH - 2) + "╗");
         String title = String.format("Energieverbrauch im Jahr %d", year);
         System.out.println("║" + TableFormatterUtils.centerText(title, TOTAL_WIDTH - 2) + "║");
-        System.out.println("╠" + "═".repeat(TOTAL_WIDTH - 2) + "╣");
-        System.out.println("║  Gemeinde                │  Verbrauch (MWh)  │  Visualisierung               ║");
-        System.out.println("╟" + "─".repeat(COLUMN_WIDTHS[0]) + "┼" + 
-                         "─".repeat(COLUMN_WIDTHS[1]) + "┼" +
-                         "─".repeat(COLUMN_WIDTHS[2]) + "╢");
+        System.out.println("║" + "═".repeat(COLUMN_WIDTHS[0]) + "╦" + 
+        "═".repeat(COLUMN_WIDTHS[1]) + "╦" +
+        "═".repeat(COLUMN_WIDTHS[2]) + "║");
+        System.out.println("║  Gemeinde            ║  Verbrauch (MWh)  ║  Visualisierung                     ║");
+        System.out.println("║" + "═".repeat(COLUMN_WIDTHS[0]) + "╬" + 
+                         "═".repeat(COLUMN_WIDTHS[1]) + "╬" +
+                         "═".repeat(COLUMN_WIDTHS[2]) + "║");
     }
 
     /**
@@ -44,9 +46,9 @@ public class SortierenNachVerbrauch {
         double total = yearData.stream().mapToDouble(DataSet::getWert).sum();
         double average = yearData.stream().mapToDouble(DataSet::getWert).average().orElse(0.0);
         
-        System.out.println("╟" + "─".repeat(COLUMN_WIDTHS[0]) + "┴" + 
-                         "─".repeat(COLUMN_WIDTHS[1]) + "┴" +
-                         "─".repeat(COLUMN_WIDTHS[2]) + "╢");
+        System.out.println("║" + "═".repeat(COLUMN_WIDTHS[0]) + "╩" + 
+                         "═".repeat(COLUMN_WIDTHS[1]) + "╩" +
+                         "═".repeat(COLUMN_WIDTHS[2]) + "║");
         String stats = String.format("Total: %s MWh        Durchschnitt: %s MWh",
             TableFormatterUtils.formatNumber(total),
             TableFormatterUtils.formatNumber(average));
@@ -58,7 +60,7 @@ public class SortierenNachVerbrauch {
      * Prints a single data row with formatting.
      */
     private static void printRow(DataSet data, double maxValue) {
-        System.out.printf("║  %-20s  │  %14s  │  %s║%n",
+        System.out.printf("║  %-18s  ║  %15s  ║ %s ║%n",
             data.getGemeinde(),
             TableFormatterUtils.formatNumber(data.getWert()),
             TableFormatterUtils.createBar(data.getWert(), maxValue, BAR_WIDTH));

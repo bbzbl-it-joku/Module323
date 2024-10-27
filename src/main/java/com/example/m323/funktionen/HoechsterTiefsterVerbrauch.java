@@ -18,8 +18,8 @@ import com.example.m323.utils.data.DataSet;
  * @since 10.10.2024
  */
 public class HoechsterTiefsterVerbrauch {
-    private static final int BAR_WIDTH = 45;  // Slightly reduced for better fit
-    private static final int[] COLUMN_WIDTHS = {8, 22, 18, 32}; // Jahr, Gemeinde, Verbrauch, Visualisierung
+    private static final int BAR_WIDTH = 27;  // Slightly reduced for better fit
+    private static final int[] COLUMN_WIDTHS = {8, 23, 19, 29}; // Jahr, Gemeinde, Verbrauch, Visualisierung
     private static final int TOTAL_WIDTH = 84; // Total width including borders
 
     /**
@@ -32,26 +32,32 @@ public class HoechsterTiefsterVerbrauch {
         
         System.out.println("\n╔" + "═".repeat(TOTAL_WIDTH - 2) + "╗");
         System.out.println("║" + TableFormatterUtils.centerText(title, TOTAL_WIDTH - 2) + "║");
-        System.out.println("╠" + "═".repeat(TOTAL_WIDTH - 2) + "╣");
-        System.out.println("║  Jahr  │  Gemeinde                │  Verbrauch (MWh)  │  Visualisierung        ║");
-        System.out.println("╟" + "─".repeat(COLUMN_WIDTHS[0]) + "┼" + 
-                         "─".repeat(COLUMN_WIDTHS[1]) + "┼" +
-                         "─".repeat(COLUMN_WIDTHS[2]) + "┼" +
-                         "─".repeat(COLUMN_WIDTHS[3]) + "╢");
+        System.out.println("╠" + "═".repeat(COLUMN_WIDTHS[0]) + "╦" + 
+        "═".repeat(COLUMN_WIDTHS[1]) + "╦" +
+        "═".repeat(COLUMN_WIDTHS[2]) + "╦" +
+        "═".repeat(COLUMN_WIDTHS[3]) + "╣");
+        System.out.println("║  Jahr  ║  Gemeinde             ║  Verbrauch (MWh)  ║  Visualisierung             ║");
+        System.out.println("║" + "═".repeat(COLUMN_WIDTHS[0]) + "╬" + 
+                         "═".repeat(COLUMN_WIDTHS[1]) + "╬" +
+                         "═".repeat(COLUMN_WIDTHS[2]) + "╬" +
+                         "═".repeat(COLUMN_WIDTHS[3]) + "║");
     }
 
     /**
      * Prints the footer for the results.
      */
     private static void printFooter() {
-        System.out.println("╚" + "═".repeat(TOTAL_WIDTH - 2) + "╝");
+        System.out.println("╚" + "═".repeat(COLUMN_WIDTHS[0]) + "╩" + 
+        "═".repeat(COLUMN_WIDTHS[1]) + "╩" +
+        "═".repeat(COLUMN_WIDTHS[2]) + "╩" +
+        "═".repeat(COLUMN_WIDTHS[3]) + "╝");
     }
 
     /**
      * Prints a single data row with formatting.
      */
     private static void printRow(DataSet data, double maxValue) {
-        System.out.printf("║  %4d  │  %-20s  │  %14s  │  %s║%n",
+        System.out.printf("║  %4d  ║  %-19s  ║  %15s  ║ %s ║%n",
             data.getJahr(),
             data.getGemeinde(),
             TableFormatterUtils.formatNumber(data.getWert()),

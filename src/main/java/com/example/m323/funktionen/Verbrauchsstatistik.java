@@ -20,7 +20,7 @@ import com.example.m323.utils.data.DataSet;
  * @since 10.10.2024
  */
 public class Verbrauchsstatistik {
-    private static final int GRAPH_WIDTH = 40;    // Width of the console graph
+    private static final int GRAPH_WIDTH = 33;    // Width of the console graph
     private static final int NUM_BINS = 10;       // Number of histogram bins
     private static final int TOTAL_WIDTH = 79;    // Total width of the table
     private static final int[] COLUMN_WIDTHS = {36, 8, 31}; // Verbrauchsbereich, Anzahl, Verteilung
@@ -40,32 +40,32 @@ public class Verbrauchsstatistik {
     }
 
     private static void printStatistics(DoubleSummaryStatistics stats, double stdDev) {
-        System.out.println("║  Statistische Kennzahlen:                                                 ║");
-        System.out.printf("║    • Anzahl Gemeinden:       %-10d                                     ║%n", 
+        System.out.println("║  Statistische Kennzahlen:                                                     ║");
+        System.out.printf("║    • Anzahl Gemeinden:       %-10d                                       ║%n", 
             stats.getCount());
-        System.out.printf("║    • Minimaler Verbrauch:    %-10s MWh                                ║%n", 
+        System.out.printf("║    • Minimaler Verbrauch:    %-10s MWh                                   ║%n", 
             TableFormatterUtils.formatNumber(stats.getMin()));
-        System.out.printf("║    • Maximaler Verbrauch:    %-10s MWh                                ║%n", 
+        System.out.printf("║    • Maximaler Verbrauch:    %-10s MWh                                   ║%n", 
             TableFormatterUtils.formatNumber(stats.getMax()));
-        System.out.printf("║    • Durchschnittsverbrauch: %-10s MWh                                ║%n", 
+        System.out.printf("║    • Durchschnittsverbrauch: %-10s MWh                                   ║%n", 
             TableFormatterUtils.formatNumber(stats.getAverage()));
-        System.out.printf("║    • Standardabweichung:     %-10s MWh                                ║%n", 
+        System.out.printf("║    • Standardabweichung:     %-10s MWh                                   ║%n", 
             TableFormatterUtils.formatNumber(stdDev));
     }
 
     private static void printHistogramHeader() {
-        System.out.println("║                                                                           ║");
-        System.out.println("║  Verteilung der Verbrauchswerte:                                         ║");
-        System.out.println("║    Verbrauchsbereich (MWh)   │ Anzahl │ Verteilung                      ║");
-        System.out.println("║  ──────────────────────────────┼────────┼───────────────────────────────  ║");
+        System.out.println("║                                                                               ║");
+        System.out.println("║  Verteilung der Verbrauchswerte:                                              ║");
+        System.out.println("║    Verbrauchsbereich (MWh)  │  Anzahl  │  Verteilung                          ║");
+        System.out.println("║  ───────────────────────────┼──────────┼────────────────────────────────────  ║");
     }
 
-    private static void printHistogramBar(double binStart, double binEnd, long count, int barLength) {
-        System.out.printf("║    %8s - %-8s      │   %-4d │ %-28s ║%n",
+    private static void printHistogramBar(double binStart, double binEnd, long count, long maxCount, int barLength) {
+        System.out.printf("║    %10s - %-10s  │  %6s  │  %-28s   ║%n",
             TableFormatterUtils.formatNumber(binStart), 
             TableFormatterUtils.formatNumber(binEnd),
             count,
-            TableFormatterUtils.createBar(count, count, barLength));
+            TableFormatterUtils.createBar(count, maxCount, barLength));
     }
 
     private static void printFooter() {
@@ -133,7 +133,7 @@ public class Verbrauchsstatistik {
         for (int i = 0; i < NUM_BINS; i++) {
             double binStart = stats.getMin() + (i * binWidth);
             double binEnd = binStart + binWidth;
-            printHistogramBar(binStart, binEnd, histogram[i], GRAPH_WIDTH);
+            printHistogramBar(binStart, binEnd, histogram[i], maxCount, GRAPH_WIDTH);
         }
 
         printFooter();
@@ -179,11 +179,16 @@ public class Verbrauchsstatistik {
         printStatistics(stats, stdDev);
         printHistogramHeader();
 
+        int maxCount = histogram.values().stream()
+            .max(Long::compare)
+            .orElse(0L)
+            .intValue();
+
         IntStream.range(0, NUM_BINS).forEach(i -> {
             double binStart = stats.getMin() + (i * binWidth);
             double binEnd = binStart + binWidth;
             long binCount = histogram.getOrDefault(i, 0L);
-            printHistogramBar(binStart, binEnd, binCount, GRAPH_WIDTH);
+            printHistogramBar(binStart, binEnd, binCount, maxCount, GRAPH_WIDTH);
         });
 
         printFooter();

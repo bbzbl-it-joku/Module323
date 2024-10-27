@@ -19,9 +19,9 @@ import com.example.m323.utils.data.DataSet;
  * @since 10.10.2024
  */
 public class Verbrauchskategorien {
-    private static final int BAR_WIDTH = 30;
-    private static final int[] COLUMN_WIDTHS = {8, 28, 13, 27}; // Jahr, Kategorie, Gemeinden, Verteilung
-    private static final int TOTAL_WIDTH = 80; // Total width including borders
+    private static final int BAR_WIDTH = 24;
+    private static final int[] COLUMN_WIDTHS = {8, 32, 13, 26}; // Jahr, Kategorie, Gemeinden, Verteilung
+    private static final int TOTAL_WIDTH = 84 ; // Total width including borders
     
     private static final String CATEGORY_LOW = "Niedrig";
     private static final String CATEGORY_MEDIUM = "Mittel";
@@ -34,39 +34,45 @@ public class Verbrauchskategorien {
     private static void printHeader() {
         System.out.println("\n╔" + "═".repeat(TOTAL_WIDTH - 2) + "╗");
         System.out.println("║" + TableFormatterUtils.centerText("Verteilung der Energieverbrauchskategorien", TOTAL_WIDTH - 2) + "║");
-        System.out.println("╠" + "═".repeat(TOTAL_WIDTH - 2) + "╣");
-        System.out.println("║  Jahr  │  Kategorie                    │  Gemeinden  │  Verteilung            ║");
-        System.out.println("╟" + "─".repeat(COLUMN_WIDTHS[0]) + "┼" + 
-                         "─".repeat(COLUMN_WIDTHS[1]) + "┼" +
-                         "─".repeat(COLUMN_WIDTHS[2]) + "┼" +
-                         "─".repeat(COLUMN_WIDTHS[3]) + "╢");
+        System.out.println("║" + "═".repeat(COLUMN_WIDTHS[0]) + "╦" + 
+                         "═".repeat(COLUMN_WIDTHS[1]) + "╦" +
+                         "═".repeat(COLUMN_WIDTHS[2]) + "╦" +
+                         "═".repeat(COLUMN_WIDTHS[3]) + "║");
+        System.out.println("║  Jahr  ║  Kategorie                     ║  Gemeinden  ║  Verteilung              ║");
+        System.out.println("║" + "═".repeat(COLUMN_WIDTHS[0]) + "╬" + 
+                         "═".repeat(COLUMN_WIDTHS[1]) + "╬" +
+                         "═".repeat(COLUMN_WIDTHS[2]) + "╬" +
+                         "═".repeat(COLUMN_WIDTHS[3]) + "║");
     }
 
     private static void printYearSeparator() {
-        System.out.println("╟" + "─".repeat(COLUMN_WIDTHS[0]) + "┼" + 
-                         "─".repeat(COLUMN_WIDTHS[1]) + "┼" +
-                         "─".repeat(COLUMN_WIDTHS[2]) + "┼" +
-                         "─".repeat(COLUMN_WIDTHS[3]) + "╢");
+        System.out.println("║" + "═".repeat(COLUMN_WIDTHS[0]) + "╬" + 
+                         "═".repeat(COLUMN_WIDTHS[1]) + "╬" +
+                         "═".repeat(COLUMN_WIDTHS[2]) + "╬" +
+                         "═".repeat(COLUMN_WIDTHS[3]) + "║");
     }
 
     private static void printFooter() {
-        System.out.println("╚" + "═".repeat(TOTAL_WIDTH - 2) + "╝");
+        System.out.println("╚" + "═".repeat(COLUMN_WIDTHS[0]) + "╩" + 
+                         "═".repeat(COLUMN_WIDTHS[1]) + "╩" +
+                         "═".repeat(COLUMN_WIDTHS[2]) + "╩" +
+                         "═".repeat(COLUMN_WIDTHS[3]) + "╝");
     }
 
     private static String getCategoryDescription(String category) {
         if (CATEGORY_LOW.equals(category)) {
-            return String.format("%-6s (0-%-,6.0f MWh)", category, THRESHOLD_LOW);
+            return String.format("%-6s  (0-%-,6.0f MWh)     ", category, THRESHOLD_LOW);
         } else if (CATEGORY_MEDIUM.equals(category)) {
-            return String.format("%-6s (%-,6.0f-%-,6.0f MWh)", 
+            return String.format("%-6s   (%-,6.0f-%-,6.0f MWh)", 
                                 category, THRESHOLD_LOW, THRESHOLD_MEDIUM);
         } else if (CATEGORY_HIGH.equals(category)) {
-            return String.format("%-6s (>%-,6.0f MWh)", category, THRESHOLD_MEDIUM);
+            return String.format("%-6s   (>%-,6.0f MWh)      ", category, THRESHOLD_MEDIUM);
         }
         return category;
     }
 
     private static void printCategoryRow(Integer year, String category, long count, long maxCount, boolean showYear) {
-        System.out.printf("║  %s │  %-24s  │  %9d  │  %s║%n",
+        System.out.printf("║  %s  ║  %-26s  ║  %9d  ║ %s ║%n",
             showYear ? String.format("%4d", year) : "    ",
             getCategoryDescription(category),
             count,

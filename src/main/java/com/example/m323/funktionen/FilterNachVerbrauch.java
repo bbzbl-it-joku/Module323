@@ -20,7 +20,7 @@ import com.example.m323.utils.data.DataSet;
  */
 public class FilterNachVerbrauch {
     private static final int BAR_WIDTH = 35;
-    private static final int[] COLUMN_WIDTHS = {20, 7, 20, 35}; // Gemeinde, Jahr, Verbrauch, Visualisierung
+    private static final int[] COLUMN_WIDTHS = {20, 7, 20, 36}; // Gemeinde, Jahr, Verbrauch, Visualisierung
     private static final int TOTAL_WIDTH = 88; // Total width of the table
     
     /**
@@ -32,9 +32,9 @@ public class FilterNachVerbrauch {
         System.out.println("\n╔" + "═".repeat(TOTAL_WIDTH - 2) + "╗");
         System.out.printf("║  Gemeinden mit Verbrauch über %s MWh%s║%n",
             TableFormatterUtils.formatNumber(verbrauch),
-            " ".repeat(TOTAL_WIDTH - 35 - TableFormatterUtils.formatNumber(verbrauch).length()));
+            " ".repeat(TOTAL_WIDTH - 37 - TableFormatterUtils.formatNumber(verbrauch).length()));
         System.out.println(TableFormatterUtils.createColumnSeparator(COLUMN_WIDTHS, '═', '╦'));
-        System.out.println("║  Gemeinde             ║  Jahr ║  Verbrauch (MWh)   ║  Visualisierung           ║");
+        System.out.println("║  Gemeinde          ║  Jahr ║  Verbrauch (MWh)   ║  Visualisierung                    ║");
         System.out.println(TableFormatterUtils.createColumnSeparator(COLUMN_WIDTHS, '═', '╬'));
     }
 
@@ -56,11 +56,11 @@ public class FilterNachVerbrauch {
      * Prints a single data row with formatting.
      */
     private static void printRow(DataSet dataSet, double maxValue) {
-        System.out.printf("║  %-18s ║  %4d ║  %15s  ║  %s║%n",
+        System.out.printf("║  %-18s║  %4d ║ %15s    ║ %s ║%n",
             dataSet.getGemeinde(),
             dataSet.getJahr(),
             TableFormatterUtils.formatNumber(dataSet.getWert()),
-            TableFormatterUtils.createBar(dataSet.getWert(), maxValue, BAR_WIDTH));
+            TableFormatterUtils.createBar(dataSet.getWert(), maxValue, BAR_WIDTH - 1));
     }
 
     /**
