@@ -73,7 +73,7 @@ public class ArgsHandler {
         System.out.println("  -m, --highest\t\tFind the community with the highest consumption");
 
         System.out.println("\nOptions for method nr. 6:");
-        System.out.println("  -a, --ascending\tSort communities by consumption (ascending)");
+        System.out.println("  -y, --year\t\tCreate consumption statistics for a specific year");
 
         System.out.println("\nOptions for method nr. 7:");
         System.out.println("  -y, --year\t\tCreate consumption statistics for a specific year");

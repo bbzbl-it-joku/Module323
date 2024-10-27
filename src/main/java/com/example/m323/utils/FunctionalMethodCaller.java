@@ -95,7 +95,18 @@ public class FunctionalMethodCaller {
      * @param args the command line arguments
      */
     public static void handleSortierenNachVerbrauch(String[] args) {
-        SortierenNachVerbrauch.functionalFunction();
+        int year = 2020;
+
+        if (Arrays.asList(args).contains("-y")) {
+            year = Arrays.asList(args).indexOf("-y") + 1 < args.length
+                    ? Integer.parseInt(args[Arrays.asList(args).indexOf("-y") + 1])
+                    : 2020;
+        } else if (Arrays.asList(args).contains("--year")) {
+            year = Arrays.asList(args).indexOf("--year") + 1 < args.length
+                    ? Integer.parseInt(args[Arrays.asList(args).indexOf("--year") + 1])
+                    : 2020;
+        }
+        SortierenNachVerbrauch.functionalFunction(year);
     }
 
     /**

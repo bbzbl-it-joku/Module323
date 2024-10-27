@@ -2,8 +2,6 @@ package com.example.m323.funktionen;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.example.m323.Main;
@@ -22,6 +20,33 @@ public class SortierenNachVerbrauch {
     private static final int BAR_WIDTH = 35;
     private static final int[] COLUMN_WIDTHS = {22, 19, 37}; // Gemeinde, Verbrauch, Visualisierung
     private static final int TOTAL_WIDTH = 82; // Total width including borders
+
+    /**
+     * Validates if the provided year exists in the dataset.
+     * 
+     * @param year The year to validate
+     * @return true if the year exists in the dataset, false otherwise
+     */
+    private static boolean isValidYear(int year) {
+        return Main.getDataLoader().getData().stream()
+            .anyMatch(data -> data.getJahr() == year);
+    }
+
+    /**
+     * Prints an error message for invalid year selection.
+     * 
+     * @param year The invalid year that was selected
+     */
+    private static void printYearError(int year) {
+        System.out.println("\nError: No data available for year " + year);
+        System.out.println("Available years:");
+        Main.getDataLoader().getData().stream()
+            .map(DataSet::getJahr)
+            .distinct()
+            .sorted()
+            .forEach(y -> System.out.print(y + " "));
+        System.out.println();
+    }
 
     /**
      * Prints the header for a specific year's data.
@@ -84,40 +109,45 @@ public class SortierenNachVerbrauch {
     /**
      * Sorts and displays consumption data using an iterative approach.
      * 
+     * @param year The specific year to display data for
      * @author Seth Schmutz
      */
-    public static void iterativeFunction() {
-        List<Integer> uniqueYears = new ArrayList<>();
-        Map<Integer, List<DataSet>> dataByYear = new HashMap<>();
-
-        // Collect and organize data
-        for (DataSet data : Main.getDataLoader().getData()) {
-            int year = data.getJahr();
-            if (!uniqueYears.contains(year)) {
-                uniqueYears.add(year);
-            }
-            dataByYear.computeIfAbsent(year, k -> new ArrayList<>()).add(data);
+    public static void iterativeFunction(int year) {
+        if (!isValidYear(year)) {
+            printYearError(year);
+            return;
         }
 
-        // Process each year in order
-        uniqueYears.stream()
-            .sorted()
-            .forEach(year -> processYearData(year, dataByYear.get(year)));
+        List<DataSet> yearData = new ArrayList<>();
+
+        // Collect data for the specified year
+        for (DataSet data : Main.getDataLoader().getData()) {
+            if (data.getJahr() == year) {
+                yearData.add(data);
+            }
+        }
+
+        processYearData(year, yearData);
     }
 
     /**
      * Sorts and displays consumption data using a functional approach.
-     * Uses streams to group, sort, and display the data.
+     * Uses streams to filter, sort, and display the data for a specific year.
      * 
+     * @param year The specific year to display data for
      * @author Joshua Kunz
      */
-    public static void functionalFunction() {
+    public static void functionalFunction(int year) {
+        if (!isValidYear(year)) {
+            printYearError(year);
+            return;
+        }
+
         Main.getDataLoader().getData().stream()
+            .filter(data -> data.getJahr() == year)
             .collect(Collectors.groupingBy(
                 DataSet::getJahr,
                 Collectors.toList()))
-            .entrySet().stream()
-            .sorted(Map.Entry.comparingByKey())
-            .forEach(entry -> processYearData(entry.getKey(), entry.getValue()));
+            .forEach((key, value) -> processYearData(key, value));
     }
 }
